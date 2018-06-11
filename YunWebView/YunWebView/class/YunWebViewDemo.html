@@ -1,0 +1,232 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <style type='text/css'>
+        html {
+            font-family: Helvetica;
+            color: #222;
+        }
+
+        h1 {
+            color: steelblue;
+            font-size: 24px;
+            margin-top: 24px;
+        }
+
+        button {
+            margin: 0 3px 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<h1>保单整理-app交互</h1>
+<div>
+    <br>
+    <button onclick="open_l2_nor()">
+        打开二级普遍页面
+    </button>
+
+    <br>
+    <button onclick="open_l2_share()">
+        打开二级普遍页面（有分享）
+    </button>
+
+    <br>
+    <button onclick="open_l2_dh_edit()">
+        打开二级动画编辑页面
+    </button>
+
+    <br>
+    <button onclick="open_l2_dh_pre()">
+        打开二级动画预览页面
+    </button>
+
+    <br>
+    <button onclick="open_l3_nor()">
+        打开三级普遍页面
+    </button>
+
+    <br>
+    <button onclick="select_img()">
+        选择图片
+    </button>
+
+    <br>
+    <input type="file" id="take-picture" accept='image/*'>
+
+
+    <!--<br>-->
+    <!--<input type="file" id="take-picture-cm" accept="image/*" capture="camera">-->
+
+    <br>
+    <label id="lbl" title="rst">ad</label>
+</div>
+<div class="album">
+    <img name="img_id" width="200" height="200" src="">
+    <img name="img_id" width="200" height="200" src="108.png">
+</div>
+<script>
+    // 相册获取图片
+    var imageType = /image.*/;
+    var getOnloadFunc = function (aImg) {
+        return function (evt) {
+            losMsg('imgurl-' + evt.target.result);
+            aImg.src = evt.target.result;
+        };
+    };
+
+    var input = document.getElementById("take-picture");
+    input.addEventListener("change", function (evt) {
+        for (var i = 0, numFiles = this.files.length; i < numFiles; i++) {
+            var file = this.files[i];
+            if (!file.type.match(imageType)) {
+                continue;
+            }
+
+            var img = document.getElementsByName('img_id')[0];
+            console.log('img-' + img);
+
+            var reader = new FileReader();
+            reader.onload = getOnloadFunc(img);
+            reader.readAsDataURL(file);
+
+            console.log(reader);
+        }
+    }, false);
+
+    // 相机获取图片
+    var inputCm = document.getElementById("take-picture-cm");
+    inputCm.addEventListener("change", function (evt) {
+        for (var i = 0, numFiles = this.files.length; i < numFiles; i++) {
+            var file = this.files[i];
+            if (!file.type.match(imageType)) {
+                continue;
+            }
+
+            var img = document.getElementsByName('img_id')[0];
+            console.log('img-' + img);
+
+            var reader = new FileReader();
+            reader.onload = getOnloadFunc(img);
+            reader.readAsDataURL(file);
+
+            console.log(reader);
+        }
+    }, false);
+
+    // 打开 app 页面
+    function loadAppURL(url) {
+        var iFrame;
+        iFrame = document.createElement("iframe");
+        iFrame.setAttribute("src", url);
+        iFrame.setAttribute("style", "display:none;");
+        iFrame.setAttribute("height", "0px");
+        iFrame.setAttribute("width", "0px");
+        iFrame.setAttribute("frameborder", "0");
+        document.body.appendChild(iFrame);
+
+        // remove
+        iFrame.parentNode.removeChild(iFrame);
+        iFrame = null;
+    }
+
+    function bdzg_select_img(url, filePath) {
+        losMsg('filePath-' + filePath + 'imgurl-' + url);
+
+        var img = document.getElementsByName('img_id')[0];
+        img.src = url;
+    }
+
+    function should_update_data() {
+        // 该页面需要更新数据
+    }
+
+    function losMsg(msg) {
+        document.getElementById('lbl').innerText = msg;
+    }
+
+    function open_l2_nor() {
+        loadAppURL("bdzg://l2_nor?nagTitle=二级普遍页面&goUrl=http://www.baidu.com");
+    }
+
+    function open_l2_share() {
+        loadAppURL("bdzg://l2_share?nagTitle=二级普遍页面（有分享）&familyId=xxx&memberId=xxx&goUrl=http://www.baidu.com");
+    }
+
+    function open_l2_dh_edit() {
+        loadAppURL("bdzg://l2_dh_edit?nagTitle=二级动画编辑页面&goUrl=http://www.baidu.com");
+    }
+
+    function open_l2_dh_pre() {
+        loadAppURL("bdzg://l2_dh_pre?goUrl=http://www.baidu.com");
+    }
+
+    function open_l3_nor() {
+        loadAppURL("bdzg://l3_nor?nagTitle=三级普遍页面&goUrl=http://www.baidu.com");
+    }
+
+    function open_l3_h() {
+        loadAppURL("bdzg://l3_h?hasShare=1&nagTitle=三级普遍页面&goUrl=http://www.baidu.com");
+    }
+
+    function select_img() {
+        loadAppURL("bdzg://select_img");
+    }
+
+    function set_title() {
+        loadAppURL("bdzg://set_title?nagTitle=三级普遍页面");
+    }
+
+    function pauseAudio() {
+        loadAppURL("bdzg://pauseAudio");
+    }
+
+    function setSharePara(fmlId, mebId) {
+        loadAppURL("bdzg://set_share_para?familyId=xxx&memberId=xxx");
+    }
+
+    function setBackViewUpdate() {
+        loadAppURL("bdzg://set_back_view_update");
+    }
+
+    function setBackViewSecChange() {
+        loadAppURL("bdzg://set_back_view_sec_change");
+    }
+
+    function setErrorCode() {
+        loadAppURL("bdzg://set_error_code?errorCode=503");
+    }
+
+    function setDataUpdate() {
+        loadAppURL("bdzg://set_data_update");
+    }
+
+    function setLeftNagOn() {
+        loadAppURL("bdzg://set_left_nag_item_on");
+    }
+
+    function setLeftNagHidden() {
+        loadAppURL("bdzg://set_left_nag_item_hidden");
+    }
+
+    function homeLoadCmp() {
+        loadAppURL("bdzg://home_load_cmp");
+    }
+
+    function setFuncIsOn() {
+        // 设置 app 中功能按钮是否显示
+        loadAppURL("bdzg://set_func_btn_on?isOn=0");
+    }
+
+    function openFmlBd() {
+        // 打开家庭保单
+        loadAppURL("bdzg://open_fml_bd?familyId=xxx&memberId=xxx&bdInfoId=xxx");
+    }
+
+    // new
+
+</script>
+</body>
+</html>
