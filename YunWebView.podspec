@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "YunWebView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "YunWebView framework for iOS"
 
   # This description is used to generate tags and improve search results.
@@ -135,5 +135,6 @@ Pod::Spec.new do |s|
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   s.dependency "YunBaseApp"
   s.dependency "YunImgView"
+  s.dependency "JSONModel"
 
 end
