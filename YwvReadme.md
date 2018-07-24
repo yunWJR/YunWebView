@@ -37,6 +37,13 @@
 // view的Push、Present方法，必须设置该值
 ```
 
+> **disableKick (bool)**
+
+```
+// 禁用页面回弹：
+// 默认 NO
+```
+
 #### APP接口方法
 
 > **view_push()**
@@ -90,6 +97,14 @@
 // 示例：skkj://view_updateId?viewId=asdasd
 ```
 
+> **view_showLoad()**
+
+```
+// 功能：显示加载页面
+// 参数：无
+// 示例：skkj://view_showLoad
+```
+
 > **view_loadCmp()**
 
 ```
@@ -102,13 +117,29 @@
 
 ```
 // 功能：设置页面需要更新，如果viewId为 null或不设置viewId，则更新当前页面。如果viewId为指定值，则更新指定viewId页面
+//           当页面显示时，调用 js方法skkj_should_update()，通知 web 更新。
 // 参数：viewId
 // 示例：skkj://view_setUpdate?viewId=asdasd
 ```
 
+> **view_setViewKick()**
+
+```
+// 功能：设置页面回弹效果。
+// 参数：disableKick
+// 示例：skkj://view_setViewKick?disableKick=1
+```
+
+
 #### js接口方法
 
-> 无
+> **skkj\_should\_update()**
+
+```
+// 功能：当设定了view_setUpdate，当显示改页面时，调用该方法，web 页面处理更新
+// 参数：无
+// 示例：skkj_should_update()
+```
 
 ### 2、导航栏模块
 
@@ -351,16 +382,100 @@
 
 #### js接口方法
 
-> **skkj\_img\_selCmp(**imgs，thumbs**)**
+> **skkj\_img\_selCmp(imgList)**
 
 ```
 // 功能：选择图片完成
-// 参数：imgs：图片列表(图片为 Base64格式)
-        thumbs：缩略图列表(图片为 Base64格式)
-// 示例：skkj_img_selCmp(imgs,thumbs)
+// 参数：imgList：图片列表,每个item包括img和thumb两个成员
+			     img:图片(为 Base64格式)
+        	     thumb：缩略图(图片为 Base64格式)
+        	     
+        	     {imgList:[{img="",thumb=""},{img="",thumb=""}]}
+// 示例：skkj_img_selCmp(imgList)
+```
+
+### 6、录音模块
+
+#### APP接口参数
+
+> **recordTime (int)**
+
+```
+// 开始录音：
+// 0-无时长限制 --默认
+// 1、2、3...时长限制，单位 s
+```
+
+#### APP接口方法
+
+> **record_start()**
+
+```
+// 功能：开始录音
+// 参数：以上参数够可以指定，不指定则使用默认值。
+// 示例：skkj://record_start?record_time=30
+```
+
+> **record_cmp()**
+
+```
+// 功能：完成录音
+//            APP 处理完成后，调用 js 方法通知 web
+// 参数：无。
+// 示例：skkj://record_cmp
+```
+
+> **record_stop()**
+
+```
+// 功能：停止录音
+// 参数：无。
+// 示例：skkj://record_stop
+```
+
+#### js接口方法
+
+> **skkj\_record\_cmp(url)**
+
+```
+// 功能：录音完成
+// 参数：url：录音 url
+// 示例：skkj_record_cmp(url)
 ```
 
 
+### 7、字体模块
+
+#### APP接口参数
+
+> **fontType (int)**
+
+```
+// 字体类型：
+// 1 -- 细体
+// 2 -- 粗体
+```
+
+#### APP接口方法
+
+> **font_getAppFontName()**
+
+```
+// 功能：获取 APP 字体名称
+// 参数：fontType，指定字体类型
+// 示例：skkj://font_getAppFontName
+```
+
+#### js接口方法
+
+> **skkj\_font\_name(name, type)**
+
+```
+// 功能：提供字体名称
+// 参数：name： 字体名称
+//      type： 字体类型
+// 示例：skkj_font_name(name,type)
+```
 
 
 

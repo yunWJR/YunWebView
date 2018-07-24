@@ -34,12 +34,24 @@
         return self.getDetailMsg;
     }
     else {
-        return _msg;
+        return self.getNorMsg;
     }
 }
 
+- (NSString *)getNorMsg {
+    if (_msg == nil) {
+        return YunErrorConfig.instance.unknownMsg;
+    }
+
+    return _msg;
+}
+
 - (NSString *)getDetailMsg {
-    return FORMAT(@"错误信息：%@\n错误码：%@", _msg, [YunValueHelper intStr:_code]);
+    if (_msg == nil) {
+        return FORMAT(@"详细错误信息：%@", _orgErr.userInfo);
+    }
+
+    return FORMAT(@"错误码：%@\n错误信息：%@", [YunValueHelper intStr:_code], _msg);
 }
 
 @end

@@ -40,6 +40,13 @@
                 [self selectImgByType:_selType];
             }];
         }
+        else if (YunImgViewConfig.instance.delegate &&
+                 [YunImgViewConfig.instance.delegate respondsToSelector:@selector(selectImgByType:)]) {
+            [YunImgViewConfig.instance.delegate selectImgByType:^(YunSelectImgType type) {
+                _selType = type;
+                [self selectImgByType:_selType];
+            }];
+        }
     }
     else {
         [self selectImgByType:_selType];
@@ -138,6 +145,29 @@
     if (_delegate && [_delegate respondsToSelector:@selector(didCmp:imgs:selType:)]) {
         [_delegate didCmp:hasImg imgs:imgs selType:_selType];
     }
+    else if (YunImgViewConfig.instance.delegate &&
+             [YunImgViewConfig.instance.delegate respondsToSelector:@selector(didCmp:imgs:selType:)]) {
+        [YunImgViewConfig.instance.delegate didCmp:hasImg imgs:imgs selType:_selType];
+    }
+
+    if (_shouldStoreImg && _selType != YunImgSelByPhotoAlbum && imgs.count == 1) {
+        UIImage *image = [UIImage imgWithObj:imgs[0]];
+
+        if (image) {
+            [self savedPhotosToAlbum:image];
+        }
+    }
+}
+
+// 保存到相册
+- (void)savedPhotosToAlbum:(UIImage *)image {
+    UIImageWriteToSavedPhotosAlbum(image,
+                                   self,
+                                   @selector(image:didFinishSavingWithError:contextInfo:),
+                                   (__bridge void *) self);
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
 }
 
 #pragma mark - TZImagePickerControllerDelegate
@@ -174,7 +204,14 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
-    UIImage *img = info[UIImagePickerControllerOriginalImage];
+    UIImage *img = nil;
+    if (self.maxCount == 1 && self.editImg) {
+        img = info[UIImagePickerControllerEditedImage]; // 编辑后的
+    }
+    else {
+        img = info[UIImagePickerControllerOriginalImage]; // 原始图片
+    }
+
     if (img == nil) {
         img = info[UIImagePickerControllerEditedImage]; // 编辑后的
     }

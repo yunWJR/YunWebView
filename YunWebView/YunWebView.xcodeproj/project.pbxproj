@@ -7,50 +7,70 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D4D20121B308CB653069DD0 /* YunWebViewDemo.html in Resources */ = {isa = PBXBuildFile; fileRef = 1D4D2BE3A6FAFD39C538C297 /* YunWebViewDemo.html */; };
-		1D4D210247831DDDA8464482 /* YwvErrorQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D2E82E75D8BAE5F5FAB08 /* YwvErrorQueryModel.m */; };
-		1D4D23AA9D62CA84D9D84E66 /* YwvVcQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D221B2AE1E510D79F520A /* YwvVcQueryModel.m */; };
-		1D4D242447527CB1F945D372 /* YunWebViewDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D26EEF413CC7AC30CB876 /* YunWebViewDefine.h */; };
-		1D4D24A889AC7A246A0968CE /* YunWebViewConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D2923012F884699A971E2 /* YunWebViewConfig.h */; };
-		1D4D26B187E4529342C21218 /* YwvNagQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D212F8FB693A39AEDED4A /* YwvNagQueryModel.h */; };
-		1D4D27BCF596A6ED8242FEF1 /* YunWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D290CAC4B3226ABBFF001 /* YunWebViewConfig.m */; };
-		1D4D27D07155D0670A20E878 /* YwvMediaQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D29DB93ECC7A544633371 /* YwvMediaQueryModel.h */; };
-		1D4D28C1C11636F5F7059758 /* YwvImgQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D2D68FAFF937FB439D092 /* YwvImgQueryModel.h */; };
-		1D4D2939F8E43075642ABD2D /* YwvMediaQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D27ADCBFBD7B002C1E686 /* YwvMediaQueryModel.m */; };
-		1D4D29D4A67997F9BD6460B0 /* YunWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D23DCBA7472DE7B07B2A1 /* YunWebViewController.h */; };
-		1D4D2C2C8A20F7B43F222A86 /* YwvErrorQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D2B7D72574AA7C863FED4 /* YwvErrorQueryModel.h */; };
-		1D4D2CE123685B33418B4968 /* YunWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D256A027811355A4CD6C3 /* YunWebViewController.m */; };
-		1D4D2D5A0FB6C81A83E915D2 /* YunWebViewDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D26D2B27DF3AF94DF05B5 /* YunWebViewDefine.m */; };
-		1D4D2D6572F9C0C08F12675B /* YwvVcQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D24B358CF91ADC3B755C4 /* YwvVcQueryModel.h */; };
-		1D4D2F2F11C9A5FA13FF5A36 /* YwvImgQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D2B1552DE42DB09A72EED /* YwvImgQueryModel.m */; };
-		1D4D2FEE935D2DB3446649B7 /* YwvNagQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D2362762D3880546263F3 /* YwvNagQueryModel.m */; };
+		1D4D20E3361747D1A4362290 /* UIImage+Rotate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D4D23FE0A5A8753B984E887 /* UIImage+Rotate.h */; };
+		1D4D2FB92CCDB185796B0FF9 /* UIImage+Rotate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D4D23063BCFB576DA6BB1C0 /* UIImage+Rotate.m */; };
 		AE11101420CDF5B500AA7464 /* YunWebViewHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = AE11101220CDF5B500AA7464 /* YunWebViewHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AE9AF03421070E25006C249D /* YunWebViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF01921070E25006C249D /* YunWebViewController.h */; };
+		AE9AF03521070E25006C249D /* YunWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF01A21070E25006C249D /* YunWebViewController.m */; };
+		AE9AF03621070E25006C249D /* YunWebViewConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF01C21070E25006C249D /* YunWebViewConfig.h */; };
+		AE9AF03721070E25006C249D /* YunWebViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF01D21070E25006C249D /* YunWebViewConfig.m */; };
+		AE9AF03821070E25006C249D /* YunWebViewDefine.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF01E21070E25006C249D /* YunWebViewDefine.h */; };
+		AE9AF03921070E25006C249D /* YunWebViewDefine.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF01F21070E25006C249D /* YunWebViewDefine.m */; };
+		AE9AF03A21070E25006C249D /* YunWebViewDemo.html in Resources */ = {isa = PBXBuildFile; fileRef = AE9AF02021070E25006C249D /* YunWebViewDemo.html */; };
+		AE9AF03B21070E25006C249D /* YwvErrorQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02121070E25006C249D /* YwvErrorQueryModel.h */; };
+		AE9AF03C21070E25006C249D /* YwvErrorQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02221070E25006C249D /* YwvErrorQueryModel.m */; };
+		AE9AF03D21070E25006C249D /* YwvFontQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02321070E25006C249D /* YwvFontQueryModel.h */; };
+		AE9AF03E21070E25006C249D /* YwvFontQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02421070E25006C249D /* YwvFontQueryModel.m */; };
+		AE9AF03F21070E25006C249D /* YwvHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02521070E25006C249D /* YwvHelper.h */; };
+		AE9AF04021070E25006C249D /* YwvHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02621070E25006C249D /* YwvHelper.m */; };
+		AE9AF04121070E25006C249D /* YwvImgItem.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02721070E25006C249D /* YwvImgItem.h */; };
+		AE9AF04221070E25006C249D /* YwvImgItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02821070E25006C249D /* YwvImgItem.m */; };
+		AE9AF04321070E25006C249D /* YwvImgList.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02921070E25006C249D /* YwvImgList.h */; };
+		AE9AF04421070E25006C249D /* YwvImgList.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02A21070E25006C249D /* YwvImgList.m */; };
+		AE9AF04521070E25006C249D /* YwvImgQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02B21070E25006C249D /* YwvImgQueryModel.h */; };
+		AE9AF04621070E25006C249D /* YwvImgQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02C21070E25006C249D /* YwvImgQueryModel.m */; };
+		AE9AF04721070E25006C249D /* YwvMediaQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02D21070E25006C249D /* YwvMediaQueryModel.h */; };
+		AE9AF04821070E25006C249D /* YwvMediaQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF02E21070E25006C249D /* YwvMediaQueryModel.m */; };
+		AE9AF04921070E25006C249D /* YwvNagQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF02F21070E25006C249D /* YwvNagQueryModel.h */; };
+		AE9AF04A21070E25006C249D /* YwvNagQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF03021070E25006C249D /* YwvNagQueryModel.m */; };
+		AE9AF04B21070E25006C249D /* YwvVcQueryModel.h in Headers */ = {isa = PBXBuildFile; fileRef = AE9AF03121070E25006C249D /* YwvVcQueryModel.h */; };
+		AE9AF04C21070E25006C249D /* YwvVcQueryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AE9AF03221070E25006C249D /* YwvVcQueryModel.m */; };
 		E54AAA8CF33EF8E601773CCF /* libPods-YunWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E856C7A7B48F03EF282053 /* libPods-YunWebView.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1D4D212F8FB693A39AEDED4A /* YwvNagQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvNagQueryModel.h; sourceTree = "<group>"; };
-		1D4D221B2AE1E510D79F520A /* YwvVcQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvVcQueryModel.m; sourceTree = "<group>"; };
-		1D4D2362762D3880546263F3 /* YwvNagQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvNagQueryModel.m; sourceTree = "<group>"; };
-		1D4D23DCBA7472DE7B07B2A1 /* YunWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YunWebViewController.h; sourceTree = "<group>"; };
-		1D4D24B358CF91ADC3B755C4 /* YwvVcQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvVcQueryModel.h; sourceTree = "<group>"; };
-		1D4D256A027811355A4CD6C3 /* YunWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YunWebViewController.m; sourceTree = "<group>"; };
-		1D4D26D2B27DF3AF94DF05B5 /* YunWebViewDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YunWebViewDefine.m; sourceTree = "<group>"; };
-		1D4D26EEF413CC7AC30CB876 /* YunWebViewDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YunWebViewDefine.h; sourceTree = "<group>"; };
-		1D4D27ADCBFBD7B002C1E686 /* YwvMediaQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvMediaQueryModel.m; sourceTree = "<group>"; };
-		1D4D290CAC4B3226ABBFF001 /* YunWebViewConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YunWebViewConfig.m; sourceTree = "<group>"; };
-		1D4D2923012F884699A971E2 /* YunWebViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YunWebViewConfig.h; sourceTree = "<group>"; };
-		1D4D29DB93ECC7A544633371 /* YwvMediaQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvMediaQueryModel.h; sourceTree = "<group>"; };
-		1D4D2B1552DE42DB09A72EED /* YwvImgQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvImgQueryModel.m; sourceTree = "<group>"; };
-		1D4D2B7D72574AA7C863FED4 /* YwvErrorQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvErrorQueryModel.h; sourceTree = "<group>"; };
-		1D4D2BE3A6FAFD39C538C297 /* YunWebViewDemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YunWebViewDemo.html; sourceTree = "<group>"; };
-		1D4D2D68FAFF937FB439D092 /* YwvImgQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvImgQueryModel.h; sourceTree = "<group>"; };
-		1D4D2E82E75D8BAE5F5FAB08 /* YwvErrorQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvErrorQueryModel.m; sourceTree = "<group>"; };
+		1D4D23063BCFB576DA6BB1C0 /* UIImage+Rotate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Rotate.m"; sourceTree = "<group>"; };
+		1D4D23FE0A5A8753B984E887 /* UIImage+Rotate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Rotate.h"; sourceTree = "<group>"; };
 		1EDBB55FBCB02EA53428A399 /* Pods-YunWebView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YunWebView.release.xcconfig"; path = "Pods/Target Support Files/Pods-YunWebView/Pods-YunWebView.release.xcconfig"; sourceTree = "<group>"; };
 		59E856C7A7B48F03EF282053 /* libPods-YunWebView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YunWebView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE11100F20CDF5B500AA7464 /* YunWebView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YunWebView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE11101220CDF5B500AA7464 /* YunWebViewHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YunWebViewHeader.h; sourceTree = "<group>"; };
 		AE11101320CDF5B500AA7464 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE9AF01921070E25006C249D /* YunWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YunWebViewController.h; sourceTree = "<group>"; };
+		AE9AF01A21070E25006C249D /* YunWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YunWebViewController.m; sourceTree = "<group>"; };
+		AE9AF01C21070E25006C249D /* YunWebViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YunWebViewConfig.h; sourceTree = "<group>"; };
+		AE9AF01D21070E25006C249D /* YunWebViewConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YunWebViewConfig.m; sourceTree = "<group>"; };
+		AE9AF01E21070E25006C249D /* YunWebViewDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YunWebViewDefine.h; sourceTree = "<group>"; };
+		AE9AF01F21070E25006C249D /* YunWebViewDefine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YunWebViewDefine.m; sourceTree = "<group>"; };
+		AE9AF02021070E25006C249D /* YunWebViewDemo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YunWebViewDemo.html; sourceTree = "<group>"; };
+		AE9AF02121070E25006C249D /* YwvErrorQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvErrorQueryModel.h; sourceTree = "<group>"; };
+		AE9AF02221070E25006C249D /* YwvErrorQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvErrorQueryModel.m; sourceTree = "<group>"; };
+		AE9AF02321070E25006C249D /* YwvFontQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvFontQueryModel.h; sourceTree = "<group>"; };
+		AE9AF02421070E25006C249D /* YwvFontQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvFontQueryModel.m; sourceTree = "<group>"; };
+		AE9AF02521070E25006C249D /* YwvHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvHelper.h; sourceTree = "<group>"; };
+		AE9AF02621070E25006C249D /* YwvHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvHelper.m; sourceTree = "<group>"; };
+		AE9AF02721070E25006C249D /* YwvImgItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvImgItem.h; sourceTree = "<group>"; };
+		AE9AF02821070E25006C249D /* YwvImgItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvImgItem.m; sourceTree = "<group>"; };
+		AE9AF02921070E25006C249D /* YwvImgList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvImgList.h; sourceTree = "<group>"; };
+		AE9AF02A21070E25006C249D /* YwvImgList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvImgList.m; sourceTree = "<group>"; };
+		AE9AF02B21070E25006C249D /* YwvImgQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvImgQueryModel.h; sourceTree = "<group>"; };
+		AE9AF02C21070E25006C249D /* YwvImgQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvImgQueryModel.m; sourceTree = "<group>"; };
+		AE9AF02D21070E25006C249D /* YwvMediaQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvMediaQueryModel.h; sourceTree = "<group>"; };
+		AE9AF02E21070E25006C249D /* YwvMediaQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvMediaQueryModel.m; sourceTree = "<group>"; };
+		AE9AF02F21070E25006C249D /* YwvNagQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvNagQueryModel.h; sourceTree = "<group>"; };
+		AE9AF03021070E25006C249D /* YwvNagQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvNagQueryModel.m; sourceTree = "<group>"; };
+		AE9AF03121070E25006C249D /* YwvVcQueryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YwvVcQueryModel.h; sourceTree = "<group>"; };
+		AE9AF03221070E25006C249D /* YwvVcQueryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YwvVcQueryModel.m; sourceTree = "<group>"; };
 		AF6B2886ED605B4FDE154715 /* Pods-YunWebView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YunWebView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YunWebView/Pods-YunWebView.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,28 +86,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1D4D21D626000AC0CCC48573 /* class */ = {
+		1D4D21D626000AC0CCC48573 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				1D4D26EEF413CC7AC30CB876 /* YunWebViewDefine.h */,
-				1D4D26D2B27DF3AF94DF05B5 /* YunWebViewDefine.m */,
-				1D4D24B358CF91ADC3B755C4 /* YwvVcQueryModel.h */,
-				1D4D221B2AE1E510D79F520A /* YwvVcQueryModel.m */,
-				1D4D2BE3A6FAFD39C538C297 /* YunWebViewDemo.html */,
-				1D4D23DCBA7472DE7B07B2A1 /* YunWebViewController.h */,
-				1D4D256A027811355A4CD6C3 /* YunWebViewController.m */,
-				1D4D290CAC4B3226ABBFF001 /* YunWebViewConfig.m */,
-				1D4D2923012F884699A971E2 /* YunWebViewConfig.h */,
-				1D4D2E82E75D8BAE5F5FAB08 /* YwvErrorQueryModel.m */,
-				1D4D2B7D72574AA7C863FED4 /* YwvErrorQueryModel.h */,
-				1D4D2B1552DE42DB09A72EED /* YwvImgQueryModel.m */,
-				1D4D2D68FAFF937FB439D092 /* YwvImgQueryModel.h */,
-				1D4D2362762D3880546263F3 /* YwvNagQueryModel.m */,
-				1D4D212F8FB693A39AEDED4A /* YwvNagQueryModel.h */,
-				1D4D27ADCBFBD7B002C1E686 /* YwvMediaQueryModel.m */,
-				1D4D29DB93ECC7A544633371 /* YwvMediaQueryModel.h */,
+				AE9AF01821070E25006C249D /* Controller */,
+				AE9AF01B21070E25006C249D /* Model */,
+				AE9AF03321070E25006C249D /* View */,
 			);
-			path = class;
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		65700D4A0EC9A10D14B52BD2 /* Pods */ = {
@@ -130,9 +136,57 @@
 			children = (
 				AE11101220CDF5B500AA7464 /* YunWebViewHeader.h */,
 				AE11101320CDF5B500AA7464 /* Info.plist */,
-				1D4D21D626000AC0CCC48573 /* class */,
+				1D4D21D626000AC0CCC48573 /* Classes */,
 			);
 			path = YunWebView;
+			sourceTree = "<group>";
+		};
+		AE9AF01821070E25006C249D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				AE9AF01921070E25006C249D /* YunWebViewController.h */,
+				AE9AF01A21070E25006C249D /* YunWebViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		AE9AF01B21070E25006C249D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AE9AF01C21070E25006C249D /* YunWebViewConfig.h */,
+				AE9AF01D21070E25006C249D /* YunWebViewConfig.m */,
+				AE9AF01E21070E25006C249D /* YunWebViewDefine.h */,
+				AE9AF01F21070E25006C249D /* YunWebViewDefine.m */,
+				AE9AF02021070E25006C249D /* YunWebViewDemo.html */,
+				AE9AF02121070E25006C249D /* YwvErrorQueryModel.h */,
+				AE9AF02221070E25006C249D /* YwvErrorQueryModel.m */,
+				AE9AF02321070E25006C249D /* YwvFontQueryModel.h */,
+				AE9AF02421070E25006C249D /* YwvFontQueryModel.m */,
+				AE9AF02521070E25006C249D /* YwvHelper.h */,
+				AE9AF02621070E25006C249D /* YwvHelper.m */,
+				AE9AF02721070E25006C249D /* YwvImgItem.h */,
+				AE9AF02821070E25006C249D /* YwvImgItem.m */,
+				AE9AF02921070E25006C249D /* YwvImgList.h */,
+				AE9AF02A21070E25006C249D /* YwvImgList.m */,
+				AE9AF02B21070E25006C249D /* YwvImgQueryModel.h */,
+				AE9AF02C21070E25006C249D /* YwvImgQueryModel.m */,
+				AE9AF02D21070E25006C249D /* YwvMediaQueryModel.h */,
+				AE9AF02E21070E25006C249D /* YwvMediaQueryModel.m */,
+				AE9AF02F21070E25006C249D /* YwvNagQueryModel.h */,
+				AE9AF03021070E25006C249D /* YwvNagQueryModel.m */,
+				AE9AF03121070E25006C249D /* YwvVcQueryModel.h */,
+				AE9AF03221070E25006C249D /* YwvVcQueryModel.m */,
+				1D4D23063BCFB576DA6BB1C0 /* UIImage+Rotate.m */,
+				1D4D23FE0A5A8753B984E887 /* UIImage+Rotate.h */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		AE9AF03321070E25006C249D /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,15 +196,20 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE9AF03821070E25006C249D /* YunWebViewDefine.h in Headers */,
 				AE11101420CDF5B500AA7464 /* YunWebViewHeader.h in Headers */,
-				1D4D242447527CB1F945D372 /* YunWebViewDefine.h in Headers */,
-				1D4D2D6572F9C0C08F12675B /* YwvVcQueryModel.h in Headers */,
-				1D4D29D4A67997F9BD6460B0 /* YunWebViewController.h in Headers */,
-				1D4D24A889AC7A246A0968CE /* YunWebViewConfig.h in Headers */,
-				1D4D2C2C8A20F7B43F222A86 /* YwvErrorQueryModel.h in Headers */,
-				1D4D28C1C11636F5F7059758 /* YwvImgQueryModel.h in Headers */,
-				1D4D26B187E4529342C21218 /* YwvNagQueryModel.h in Headers */,
-				1D4D27D07155D0670A20E878 /* YwvMediaQueryModel.h in Headers */,
+				AE9AF04521070E25006C249D /* YwvImgQueryModel.h in Headers */,
+				AE9AF04921070E25006C249D /* YwvNagQueryModel.h in Headers */,
+				AE9AF04721070E25006C249D /* YwvMediaQueryModel.h in Headers */,
+				AE9AF03621070E25006C249D /* YunWebViewConfig.h in Headers */,
+				AE9AF03421070E25006C249D /* YunWebViewController.h in Headers */,
+				AE9AF04B21070E25006C249D /* YwvVcQueryModel.h in Headers */,
+				AE9AF04121070E25006C249D /* YwvImgItem.h in Headers */,
+				AE9AF03B21070E25006C249D /* YwvErrorQueryModel.h in Headers */,
+				AE9AF04321070E25006C249D /* YwvImgList.h in Headers */,
+				AE9AF03D21070E25006C249D /* YwvFontQueryModel.h in Headers */,
+				AE9AF03F21070E25006C249D /* YwvHelper.h in Headers */,
+				1D4D20E3361747D1A4362290 /* UIImage+Rotate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,7 +273,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D4D20121B308CB653069DD0 /* YunWebViewDemo.html in Resources */,
+				AE9AF03A21070E25006C249D /* YunWebViewDemo.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,14 +389,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D4D2D5A0FB6C81A83E915D2 /* YunWebViewDefine.m in Sources */,
-				1D4D23AA9D62CA84D9D84E66 /* YwvVcQueryModel.m in Sources */,
-				1D4D2CE123685B33418B4968 /* YunWebViewController.m in Sources */,
-				1D4D27BCF596A6ED8242FEF1 /* YunWebViewConfig.m in Sources */,
-				1D4D210247831DDDA8464482 /* YwvErrorQueryModel.m in Sources */,
-				1D4D2F2F11C9A5FA13FF5A36 /* YwvImgQueryModel.m in Sources */,
-				1D4D2FEE935D2DB3446649B7 /* YwvNagQueryModel.m in Sources */,
-				1D4D2939F8E43075642ABD2D /* YwvMediaQueryModel.m in Sources */,
+				AE9AF04821070E25006C249D /* YwvMediaQueryModel.m in Sources */,
+				AE9AF04021070E25006C249D /* YwvHelper.m in Sources */,
+				AE9AF04C21070E25006C249D /* YwvVcQueryModel.m in Sources */,
+				AE9AF03E21070E25006C249D /* YwvFontQueryModel.m in Sources */,
+				AE9AF04621070E25006C249D /* YwvImgQueryModel.m in Sources */,
+				AE9AF03721070E25006C249D /* YunWebViewConfig.m in Sources */,
+				AE9AF04A21070E25006C249D /* YwvNagQueryModel.m in Sources */,
+				AE9AF03921070E25006C249D /* YunWebViewDefine.m in Sources */,
+				AE9AF03C21070E25006C249D /* YwvErrorQueryModel.m in Sources */,
+				AE9AF04221070E25006C249D /* YwvImgItem.m in Sources */,
+				AE9AF04421070E25006C249D /* YwvImgList.m in Sources */,
+				AE9AF03521070E25006C249D /* YunWebViewController.m in Sources */,
+				1D4D2FB92CCDB185796B0FF9 /* UIImage+Rotate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +538,11 @@
 				INFOPLIST_FILE = YunWebView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yun.YunWebView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -496,7 +564,11 @@
 				INFOPLIST_FILE = YunWebView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.yun.YunWebView;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

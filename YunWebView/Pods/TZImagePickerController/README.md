@@ -6,7 +6,9 @@
  A clone of UIImagePickerController, support picking multiple photos、original photo、video, also allow preview photo and video, support iOS6+.   
  一个支持多选、选原图和视频的图片选择器，同时有预览功能，支持iOS6+。
  
- ## 重要提示：提issue前请先搜索，先从已有issue里找找线索。如果发现bug，请先和Demo对照自查下，如果Demo也有bug，请再提issue。Demo正常你那不正常的，提issue时请贴上你的初始化代码，注明必要的复现步骤。这样能避免多余的沟通，帮助你更快获取答案。
+ ## 重要提示1：提issue前请先搜索，先从已有issue里找找线索。如果发现bug，请先和Demo对照自查下，如果Demo也有bug，请再提issue。Demo正常你那不正常的，提issue时请贴上你的初始化代码，注明必要的复现步骤。这样能避免多余的沟通，帮助你更快获取答案。
+ 
+ ## 重要提示2：1.9.0版本后移除了"prefs:root="的调用，这个API已经被列为私有API，请大家尽快升级。目前最新版本2.2.2
  
      关于升级iOS10和Xcdoe8的提示:    
  在Xcode8环境下将项目运行在iOS10的设备/模拟器中，访问相册和相机需要额外配置info.plist文件。分别是Privacy - Photo Library Usage Description和Privacy - Camera Usage Description字段，详见Demo中info.plist中的设置。
@@ -71,10 +73,13 @@ A：请参考issue481：https://github.com/banchichen/TZImagePickerController/is
 A：请参考issue457的解释：https://github.com/banchichen/TZImagePickerController/issues/457    
 
 **Q：系统语言是中文/英文，界面上却有部分相册名字、返回按钮显示成了英文/中文？**        
-A：请参考issue443的解释：https://github.com/banchichen/TZImagePickerController/issues/443
+A：请参考 https://github.com/banchichen/TZImagePickerController/issues/443 和 https://github.com/banchichen/TZImagePickerController/issues/929          
  
 **Q：预览界面能否支持传入NSURL、UIImage对象？**       
 A：排期中，优先级高   
+
+**Q：设置可选视频的最大/最小时长？照片的最小/最大尺寸？不符合要求的不显示**       
+A：可以的，参照Demo的isAssetCanSelect方法实现。我会返回asset出来，显示与否你来决定，注意这个是一个同步方法，对于需要根据asset去异步获取的信息如视频的大小、视频是否存在iCloud里来过滤的，无法做到。如果真要这样做，相册打开速度会变慢，你需要改我源码。
 
 **Q：可否支持横屏？**        
 A：1.8.4版本已支持    
@@ -91,7 +96,16 @@ A：1.8.4版本已支持
 **Q：可否增加微信编辑图片的功能？**           
 A：考虑下，优先级低  
 
-      最近更新    
+**Q：是否有QQ/微信群？**            
+A：有QQ群：778723997        
+
+**Q：想提交一个PR？**           
+A：请先加QQ群和我确认下，避免同时改动同一处内容。**一个PR请只修复1个问题，变动内容越少越好**。                    
+
+      最近更新     
+2.2.2 修复minPhotoWidthSelectable不生效的问题， 使用@available消除警告            
+2.1.8 优化gif图播放的体验，加入iCloud同步进度条；新增notScaleImage属性，设置为YES时内部不去缩放图片             
+2.1.6 新增allowCameraLocation属性，默认为YES，置为NO时不会在照相/摄像时定位，修复一个序号紊乱的bug              
 2.1.5 修复开启showSelectedIndex后照片列表页iCloud图片进度条紊乱的bug              
 2.1.4 新增多个页面和组件的样式自定义block，允许自定义绝大多数UI样式              
 2.1.2 新增showPhotoCannotSelectLayer属性，当已选照片张数达到最大可选张数时，可像微信一样让其它照片显示一个提示不可选的浮层            

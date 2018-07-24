@@ -17,6 +17,11 @@
 }
 
 + (instancetype)itemWithError:(NSError *)error {
+    if (YunErrorConfig.instance.delegate &&
+        [YunErrorConfig.instance.delegate respondsToSelector:@selector(preHandleInItemWithError:)]) {
+        error = [YunErrorConfig.instance.delegate preHandleInItemWithError:error];
+    }
+
     YunErrorHelper *item = [[YunErrorHelper alloc] initWithError:error];
 
     return item;

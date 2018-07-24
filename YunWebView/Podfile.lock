@@ -16,32 +16,34 @@ PODS:
     - AFNetworking/NSURLSession
   - ClusterPrePermissions (0.8.1)
   - DACircularProgress (2.3.1)
+  - JSONModel (1.7.0)
   - Mantle (2.1.0):
     - Mantle/extobjc (= 2.1.0)
   - Mantle/extobjc (2.1.0)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
-  - SDWebImage (4.4.1):
-    - SDWebImage/Core (= 4.4.1)
-  - SDWebImage/Core (4.4.1)
-  - TZImagePickerController (2.1.5)
-  - YunBaseApp (0.0.37):
+  - SDWebImage (4.4.2):
+    - SDWebImage/Core (= 4.4.2)
+  - SDWebImage/Core (4.4.2)
+  - TZImagePickerController (2.2.2)
+  - YunBaseApp (0.0.41):
     - AFNetworking
     - Mantle
     - Masonry
+    - MBProgressHUD
     - YunKits
   - YunImageBrowser (0.0.2):
     - DACircularProgress
     - MBProgressHUD
     - SDWebImage
-  - YunImgView (0.0.16):
+  - YunImgView (0.0.18):
     - Mantle
     - Masonry
     - TZImagePickerController
     - YunImageBrowser
     - YunKits
     - YunPmsHelper
-  - YunKits (0.0.46):
+  - YunKits (0.0.48):
     - AFNetworking
     - Masonry
     - SDWebImage
@@ -49,6 +51,7 @@ PODS:
     - ClusterPrePermissions
 
 DEPENDENCIES:
+  - JSONModel
   - YunBaseApp
   - YunImgView
 
@@ -57,6 +60,7 @@ SPEC REPOS:
     - AFNetworking
     - ClusterPrePermissions
     - DACircularProgress
+    - JSONModel
     - Mantle
     - Masonry
     - MBProgressHUD
@@ -72,17 +76,18 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   ClusterPrePermissions: 168c127a658e423062550dd9c56fe26042a58bce
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  JSONModel: 840bc0fcffb24b8454d2c026bf26fea454b8e98d
   Mantle: 2fa750afa478cd625a94230fbf1c13462f29395b
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
-  TZImagePickerController: e60a73665cf665c18abd45cdf48e912094eefff5
-  YunBaseApp: 9d8c389851a0ee94c999d1dd9b65370c3aed51d7
+  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  TZImagePickerController: 233a868727a813b4ca810a15035320b3bcb94ead
+  YunBaseApp: c357c68bcded34d816bdb34a169a2172f7ce4907
   YunImageBrowser: 52098e2785fc2a73f20c1687d448b441128444ba
-  YunImgView: 9be340b807dca972caaf6867cef1c030d13aa6af
-  YunKits: b58278642e8d127e94baca2eb3570205b799409b
+  YunImgView: b4f0e14c8a51def922a4b636b9ff8aa20c5f03db
+  YunKits: 7746f12b8cd1f90536281c7d0630d603b7f728a5
   YunPmsHelper: da8b5882c0927751e8a2c29a501ac16ae5b15757
 
-PODFILE CHECKSUM: 319ca028cc86722ca457a64210e303aa5b4b25f4
+PODFILE CHECKSUM: cc56307ff5e1e5c6efed0d49ddc19d6920c79df4
 
 COCOAPODS: 1.5.3
