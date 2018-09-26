@@ -54,7 +54,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self setNagBackItem];
+    [self setWebVcNagBackItem];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -766,7 +766,7 @@
     }
 
     if (_nagData.nagLeftItemType == 0) {
-        [self setNagBackItem];
+        [self setWebVcNagBackItem];
         return;
     }
 
@@ -839,7 +839,7 @@
     return query;
 }
 
-- (void)setNagBackItem {
+- (void)setWebVcNagBackItem {
     if (YunWebViewConfig.instance.delegate &&
         [YunWebViewConfig.instance.delegate respondsToSelector:@selector(setNagBackItem:)]) {
         [YunWebViewConfig.instance.delegate setNagBackItem:self];
