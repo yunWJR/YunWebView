@@ -579,7 +579,7 @@
     if (errData.errorCode == 1) {
         if ([YunValueVerifier isValidStr:errData.errorMsg]) {
             [YunAlertViewHelper.instance showYes:errData.errorMsg result:^(BOOL yes) {
-                [YunAccountMgHelper.instance.curMg removeAcct];
+                [YunAccountMgHelper.mg removeAcct];
 
                 if (YunWebViewConfig.instance.delegate &&
                     [YunWebViewConfig.instance.delegate respondsToSelector:@selector(shouldInitRootVc)]) {
@@ -588,7 +588,7 @@
             }];
         }
         else {
-            [YunAccountMgHelper.instance.curMg removeAcct];
+            [YunAccountMgHelper.mg removeAcct];
 
             if (YunWebViewConfig.instance.delegate &&
                 [YunWebViewConfig.instance.delegate respondsToSelector:@selector(shouldInitRootVc)]) {

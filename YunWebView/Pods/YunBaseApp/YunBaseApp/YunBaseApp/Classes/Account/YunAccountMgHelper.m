@@ -4,13 +4,32 @@
 //
 
 #import "YunAccountMgHelper.h"
+#import "YunAccountMg.h"
 
 @interface YunAccountMgHelper () {
 }
 
+@property (nonatomic, strong) YunAccountMg *curMg;
+
 @end
 
 @implementation YunAccountMgHelper
+
++ (YunAccountMg *)mg {
+    return YunAccountMgHelper.instance.curMg;
+}
+
++ (void)setMg:(YunAccountMg *)mg {
+    YunAccountMgHelper.instance.curMg = mg;
+}
+
+- (YunAccountMg *)curMg {
+    if (_curMg == nil) {
+        _curMg = [YunAccountMg new];
+    }
+
+    return _curMg;
+}
 
 + (instancetype)instance {
     static id _sharedInstance = nil;
@@ -21,5 +40,6 @@
 
     return _sharedInstance;
 }
+
 
 @end

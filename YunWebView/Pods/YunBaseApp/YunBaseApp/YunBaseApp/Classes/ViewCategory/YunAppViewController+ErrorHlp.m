@@ -54,12 +54,20 @@
     }
 
     if (err.type == YunErrTypeOutOfLogin) {
-        [YunAccountMgHelper.instance.curMg removeAcct];
+        [YunAccountMgHelper.mg removeAcct];
 
         [YunAlertViewHelper.instance showYes:err.getMsgByMode result:^(BOOL yes) {
             if (YunErrorConfig.instance.didErrorOn) {
                 YunErrorConfig.instance.didErrorOn(err, NO);
             }
+        }];
+
+        return;
+    }
+
+    if (err.type == YunErrTypeNoCtnAndGoBack) {
+        [YunAlertViewHelper.instance showYes:err.getMsgByMode result:^(BOOL yes) {
+            [self didClickNagLeftItem];
         }];
 
         return;

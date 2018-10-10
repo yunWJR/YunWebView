@@ -20,7 +20,7 @@
     if (self) {
         _acctFileName = @"YunAccountData";
 
-        YunAccountMgHelper.instance.curMg = self;
+        YunAccountMgHelper.mg = self;
     }
 
     return self;
@@ -34,6 +34,17 @@
     }
     _acct.user = user;
     _acct.userName = name;
+
+    [self saveAcctData];
+
+    [self handleAcctUpdated];
+}
+
+- (void)storeUser:(id)user {
+    if (_acct == nil) {
+        _acct = [YunAccountModel new];
+    }
+    _acct.user = user;
 
     [self saveAcctData];
 
@@ -54,6 +65,15 @@
     }
 
     return _acct.userName;
+}
+
+- (NSString *)getUserToken {
+    if (_delegate && [_delegate respondsToSelector:@selector(getUserToken:)]) {
+
+        return [_delegate getUserToken:_acct];
+    }
+
+    return nil;
 }
 
 - (void)removeUser {
@@ -82,11 +102,19 @@
     if (_didDataChanged) {
         _didDataChanged(_acct);
     }
+
+    if (_delegate && [_delegate respondsToSelector:@selector(didAcctUpdated:)]) {
+        [_delegate didAcctUpdated:_acct];
+    }
 }
 
 - (void)handleAcctRemoved {
     if (_didDataChanged) {
         _didDataChanged(_acct);
+    }
+
+    if (_delegate && [_delegate respondsToSelector:@selector(didAcctRemoved:)]) {
+        [_delegate didAcctRemoved:_acct];
     }
 }
 
