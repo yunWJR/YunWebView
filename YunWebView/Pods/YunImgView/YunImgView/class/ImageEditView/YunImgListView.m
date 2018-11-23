@@ -16,6 +16,7 @@
 #import "YunUILabelFactory.h"
 #import "YunGlobalDefine.h"
 #import "UIColor+YunAdd.h"
+#import "YunImgViewConfig.h"
 
 @interface YunImgListView () <UICollectionViewDataSource, UICollectionViewDelegate,
         UICollectionViewDelegateFlowLayout, MWPhotoBrowserDelegate,
@@ -73,6 +74,8 @@
 
     _selHelper = [YunSelectImgHelper new];
     _selHelper.delegate = self;
+
+    _selVideo = NO;
 
     self.backgroundColor = [UIColor clearColor];
 
@@ -160,6 +163,8 @@
         cell.backgroundColor = _itemBgColor;
     }
 
+    [cell setCoverImg:_imgDataList[index].isVideoItem ? _videoCoverImg : nil];
+
     return cell;
 }
 
@@ -214,7 +219,7 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     _selHelper.isCompression = _isCompression;
     _selHelper.shouldStoreImg = _shouldStoreImg;
 
-    [_selHelper selectImg:_imgDataList.count];
+    [_selHelper selectItem:_imgDataList.count];
 }
 
 - (void)notiCmp:(BOOL)changed {
@@ -434,6 +439,18 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
     [_imgDataList addObject:imgInfo];
 }
 
+- (void)addVideoByVideoItem:(YunImgData *)videoItem {
+    if (_imgDataList.count >= _maxCount) {
+        [self showImageOutOfCount];
+
+        return;
+    }
+
+    [_imgDataList addObject:videoItem];
+
+    [self reloadImgData];
+}
+
 - (void)removeAllImg {
     [_imgDataList removeAllObjects];
 
@@ -636,13 +653,70 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
                 return [MWPhoto photoWithURL:[NSURL URLWithString:img.data]];
             case YunImgImgData:
                 return [MWPhoto photoWithImage:[UIImage imageWithData:img.data]];
+            case YunImgSrcName:
+                return [MWPhoto photoWithImage:[UIImage imageNamed:img.data]];
+            case YunImgVideoURLStr: {
+                return [self getMwVideo:img];
+            }
+            case YunImgVideoFilePath: {
+                return [self getMwVideo:img];
+            }
+            case YunImgVideoPHAsset: {
+                return [self getMwVideo:img];
+            }
             default:
-                NSLog(@"ImageSrcUnknown");
                 break;
+            case YunImgUnknown:
+                break;
+
         }
     }
 
     return nil;
+}
+
+- (MWPhoto *)getMwVideo:(YunImgData *)img {
+    MWPhoto *video;
+
+    switch (img.thumbData.type) {
+        case YunImgUnknown:
+            break;
+        case YunImgImage:
+            video = [MWPhoto photoWithImage:img.thumbData.data];
+            break;
+        case YunImgURLStr:
+            video = [MWPhoto photoWithURL:[NSURL URLWithString:img.thumbData.data]];
+            break;
+        case YunImgSrcName:
+            video = [MWPhoto photoWithImage:[UIImage imageNamed:img.thumbData.data]];
+            break;
+        case YunImgImgData:
+            video = [MWPhoto photoWithImage:[UIImage imageWithData:img.thumbData.data]];
+            break;
+        case YunImgVideoURLStr:
+            break;
+        case YunImgVideoFilePath:
+            break;
+        case YunImgVideoPHAsset:
+            break;
+    }
+
+    if (video == nil) {
+        video = [MWPhoto new];
+        video.isVideo = YES;
+    }
+
+    if (img.type == YunImgVideoURLStr) {
+        video.videoURL = [NSURL URLWithString:img.data];
+    }
+    else if (img.type == YunImgVideoFilePath) {
+        video.videoURL = [NSURL fileURLWithPath:img.data];
+    }
+    else if (img.type == YunImgVideoPHAsset) {
+        video = [MWPhoto photoWithAsset:img.data targetSize:[UIScreen mainScreen].bounds.size];
+    }
+
+    return video;
 }
 
 - (void)showImageOutOfCount {
@@ -660,24 +734,34 @@ minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
 
 #pragma mark - YunSelectImgDelegate
 
-- (void)didCmp:(BOOL)cmp imgs:(NSArray *)imgs selType:(YunSelectImgType)selType {
-    [self notiCmp:cmp];
+- (void)didCmpWithItems:(NSArray *)items error:(NSError *)error selType:(YunSelectImgType)selType {
+    if (items == nil || items.count == 0) {return;}
 
-    if (imgs == nil || imgs.count == 0) {return;}
+    [self notiCmp:YES];
 
-    for (int i = 0; i < imgs.count; ++i) {
-        if ([imgs[i] isKindOfClass:UIImage.class]) {
-            [self addImgByImg:imgs[i]];
+    for (int i = 0; i < items.count; ++i) {
+        if (selType == YunVideoSelByCamera || selType == YunVideoSelByPhotoAlbum) {
+
+            [self addVideoByVideoItem:items[i]];
+            continue;
         }
-        else if ([imgs[i] isKindOfClass:NSData.class]) {
-            [self addImgByImgData:imgs[i]];
+
+        if ([items[i] isKindOfClass:UIImage.class]) {
+            [self addImgByImg:items[i]];
+        }
+        else if ([items[i] isKindOfClass:NSData.class]) {
+            [self addImgByImgData:items[i]];
         }
     }
 }
 
-- (void)selectImgByType:(void (^)(YunSelectImgType type))cmp {
-    if (_delegate && [_delegate respondsToSelector:@selector(selectImgByType:)]) {
-        return [_delegate selectImgByType:cmp];
+- (void)selectItemByType:(YunSelectImgType)type cmp:(void (^)(YunSelectImgType type))cmp {
+    if (_delegate && [_delegate respondsToSelector:@selector(selectItemByType:cmp:)]) {
+        [_delegate selectItemByType:type cmp:cmp];
+    }
+    else if (YunImgViewConfig.instance.delegate &&
+             [YunImgViewConfig.instance.delegate respondsToSelector:@selector(selectItemByType:cmp:)]) {
+        [YunImgViewConfig.instance.delegate selectItemByType:type cmp:cmp];
     }
 }
 

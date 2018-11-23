@@ -38,6 +38,13 @@
     return [self itemWithType:YunImgURLStr data:url];
 }
 
++ (instancetype)itemWithVideoUrlStr:(NSString *)videoUrl thumb:(NSString *)thumb {
+    YunImgData *item = [self itemWithType:YunImgVideoURLStr data:videoUrl];
+    item.thumbData = thumb;
+
+    return item;
+}
+
 + (instancetype)itemWithImg:(UIImage *)img {
     return [self itemWithType:YunImgImage data:img];
 }
@@ -87,8 +94,21 @@
             }
         }
             break;
+        case YunImgUnknown:
+            //[YunLogHelper logMsg:@"ImageSrcUnknown"];
+            break;
+        case YunImgSrcName:
+            imgView.image = [UIImage imageNamed:_data];
+            break;
+        case YunImgVideoURLStr:
+            //[imgView setImgUrlStr:_thumbData]; // todo
+            break;
+        case YunImgVideoFilePath:
+            //[imgView setImgUrlStr:_thumbData]; // todo
+            break;
+        case YunImgVideoPHAsset:
+            break;
         default:
-            NSLog(@"ImageSrcUnknown");
             break;
     }
 }
@@ -118,6 +138,10 @@
     }
 
     return NO;
+}
+
+- (BOOL)isVideoItem {
+    return _type >= YunImgVideoURLStr;
 }
 
 - (UIImage *)getImg:(BOOL)isZoom data:(id)data {

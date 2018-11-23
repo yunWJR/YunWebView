@@ -5,7 +5,6 @@
 
 #import "JSONModel.h"
 
-
 @interface YwvMediaQueryModel : JSONModel
 
 @property (nonatomic, copy) NSString *mdPhone;

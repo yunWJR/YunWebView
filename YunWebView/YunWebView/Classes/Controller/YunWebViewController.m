@@ -853,25 +853,37 @@
 #pragma mark - YunSelectImgDelegate
 
 // 需要Config设置
-- (void)selectImgByType:(void (^)(YunSelectImgType type))cmp {
+- (void)selectItemByType:(YunSelectImgType)type cmp:(void (^)(YunSelectImgType type))cmp {
     if (YunWebViewConfig.instance.selImgDelegate &&
         [YunWebViewConfig.instance.selImgDelegate respondsToSelector:@selector(selectImgByType:)]) {
-        [YunWebViewConfig.instance.selImgDelegate selectImgByType:cmp];
+        [YunWebViewConfig.instance.selImgDelegate selectItemByType:type cmp:cmp];
     }
     else {
         [YunLogHelper logMsg:@"YunWebViewController：需要实现selectImgByType协议" force:YES];
     }
 }
 
-- (void)didCmp:(BOOL)cmp imgs:(NSArray *)imgs selType:(YunSelectImgType)selType {
-    if (imgs == nil || imgs.count == 0) {
+- (void)didCmpWithItems:(NSArray *)items error:(NSError *)error selType:(YunSelectImgType)selType {
+    if (error) {
+        [YunLogHelper logMsg:error.getErrorMsg force:YES];
+        return;
+    }
+
+    if (items == nil || items.count == 0) {
         return;
     }
 
     NSMutableArray *imgList = [NSMutableArray new];
 
-    for (int i = 0; i < imgs.count; ++i) {
-        UIImage *image = [UIImage imgWithObj:imgs[i]];
+    for (int i = 0; i < items.count; ++i) {
+        UIImage *image;
+        if ([items isKindOfClass:UIImage.class]) {
+            image = items[i];
+        }
+        else if ([items isKindOfClass:NSData.class]) {
+            image = [UIImage imgWithObj:items[i]];
+        }
+
         if (image == nil) {
             continue;
         }
@@ -888,8 +900,8 @@
     [self jsFuncOn:jsGet];
 
     // 保存相册
-    if (_imgData.imgSaveToAlbum && selType != YunImgSelByPhotoAlbum && imgs.count == 1) {
-        [self savedPhotosToAlbum:imgs[0]];
+    if (_imgData.imgSaveToAlbum && selType != YunImgSelByPhotoAlbum && items.count == 1) {
+        [self savedPhotosToAlbum:items[0]];
     }
 }
 

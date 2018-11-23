@@ -4,14 +4,22 @@
 //
 
 #import <YunKits/YunGlobalDefine.h>
+#import <CoreServices/CoreServices.h>
+#import "YunImgData.h"
+#import <YunKits/YunValueHelper.h>
+#import <YunKits/NSError+YunAdd.h>
 #import "YunSelectImgHelper.h"
 #import "TZImagePickerController.h"
 #import "YunPmsHlp.h"
 #import "YunImgViewConfig.h"
 #import "UIImage+YunAdd.h"
+#import "YunValueVerifier.h"
 
-@interface YunSelectImgHelper () <UIImagePickerControllerDelegate,
-        TZImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface YunSelectImgHelper () <UIImagePickerControllerDelegate, TZImagePickerControllerDelegate, UINavigationControllerDelegate> {
+    // 最近一次选择的类型
+    YunSelectImgType _lastSelType;
+
+    UIImagePickerController *_imgPk;
 }
 
 @end
@@ -22,29 +30,63 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
+        // 默认参数
         self.disAmt = YES;
         self.imgLength = YunImgViewConfig.instance.maxImgLength;
         self.imgBoundary = YunImgViewConfig.instance.maxImgBoundary;
+        self.videoLength = YunImgViewConfig.instance.videoLength;
+        self.videoMaxDuration = YunImgViewConfig.instance.videoMaxDuration;
+        self.videoQuality = YunImgViewConfig.instance.videoQuality;
     }
 
     return self;
 }
 
+// 兼容旧方法
 - (void)selectImg:(NSInteger)curCount {
+    [self selectItem:curCount];
+}
+
+- (void)selectItem:(NSInteger)curCount {
     _curCount = curCount;
 
-    if (_selType == YunImgSelByCameraAndPhotoAlbum) {
-        if (_delegate && [_delegate respondsToSelector:@selector(selectImgByType:)]) {
-            [_delegate selectImgByType:^(YunSelectImgType type) {
-                _selType = type;
-                [self selectImgByType:_selType];
+    if (!self.isValidCurCount) {
+        return;
+    }
+
+    if (_selType == YunImgSelByCameraAndPhotoAlbum ||
+        _selType == YunVideoSelByCameraAndPhotoAlbum ||
+        _selType == YunImgAndVideoSelByCameraAndPhotoAlbum) {
+
+        // 兼容旧方法
+        if (_selType == YunImgSelByCameraAndPhotoAlbum) {
+            if (_delegate && [_delegate respondsToSelector:@selector(selectImgByType:)]) {
+                [_delegate selectImgByType:^(YunSelectImgType type) {
+                    [self selectImgByType:type];
+                }];
+
+                return;
+            }
+
+            if (YunImgViewConfig.instance.delegate &&
+                [YunImgViewConfig.instance.delegate respondsToSelector:@selector(selectImgByType:)]) {
+                [YunImgViewConfig.instance.delegate selectImgByType:^(YunSelectImgType type) {
+                    [self selectImgByType:type];
+                }];
+
+                return;
+            }
+        }
+
+        if (_delegate && [_delegate respondsToSelector:@selector(selectItemByType:cmp:)]) {
+            [_delegate selectItemByType:_selType cmp:^(YunSelectImgType type) {
+                [self selectImgByType:type];
             }];
         }
         else if (YunImgViewConfig.instance.delegate &&
-                 [YunImgViewConfig.instance.delegate respondsToSelector:@selector(selectImgByType:)]) {
-            [YunImgViewConfig.instance.delegate selectImgByType:^(YunSelectImgType type) {
-                _selType = type;
-                [self selectImgByType:_selType];
+                 [YunImgViewConfig.instance.delegate respondsToSelector:@selector(selectItemByType:cmp:)]) {
+            [YunImgViewConfig.instance.delegate selectItemByType:_selType cmp:^(YunSelectImgType type) {
+                [self selectImgByType:type];
             }];
         }
     }
@@ -53,16 +95,43 @@
     }
 }
 
+- (BOOL)isValidCurCount {
+    if (_maxCount > 0) {
+        BOOL isValid = _maxCount > _curCount;
+
+        if (!isValid) {
+            [self notiCmpError:FORMAT(@"最多选择%@项", [YunValueHelper intStr:_maxCount])];
+        }
+
+        return isValid;
+    }
+
+    return YES;
+}
+
 - (void)selectImgByType:(YunSelectImgType)type {
+    _lastSelType = type;
+
     if (type == YunImgSelByCamera) {
-        [self selByCamera];
+        [self selByCamera:NO];
     }
     else if (type == YunImgSelByPhotoAlbum) {
-        [self selByAlbum];
+        [self selByAlbum:NO];
+    }
+    else if (type == YunVideoSelByCamera) {
+        [self selByCamera:YES];
+    }
+    else if (type == YunVideoSelByPhotoAlbum) {
+        [self selByAlbum:YES];
+    }
+    else {
+        [self notiCmpError:FORMAT(@"未知的选择类型")];
     }
 }
 
-- (void)selByCamera {
+- (void)selByCamera:(BOOL)isVideo {
+
+    // todo 权限检查
     WEAK_SELF
     [[YunPmsHlp instance] showCameraPmsWithTitle:@"是否允许使用相机？"
                                          message:@"是否允许使用相机？"
@@ -78,52 +147,72 @@
                                                                                             YunDgRst userDrAb,
                                                                                             YunDgRst sysDrAb) {
                                                                                    if (hasPmsAb) {
-                                                                                       [weakSelf openCamera];
+                                                                                       [weakSelf openCamera:isVideo];
                                                                                    }
                                                                                    else {
-                                                                                       [weakSelf notiCmp:NO
-                                                                                                    imgs:nil]; // todo 情况还应考虑
+                                                                                       [self notiCmpError:FORMAT(@"无相册权限")];
                                                                                    }
                                                                                }];
                                           }
                                           else {
-                                              [weakSelf notiCmp:NO imgs:nil]; // todo 情况还应考虑
+                                              [self notiCmpError:FORMAT(@"无相机权限")];
                                           }
                                       }];
 }
 
-- (void)openCamera {
-    UIImagePickerController *imgPk = [[UIImagePickerController alloc] init];
-    imgPk.delegate = self;
+- (void)openCamera:(BOOL)isVideo {
+    _imgPk = [[UIImagePickerController alloc] init];
+    _imgPk.delegate = self;
+    _imgPk.sourceType = UIImagePickerControllerSourceTypeCamera;
 
-    imgPk.allowsEditing = _editImg;
-    imgPk.sourceType = UIImagePickerControllerSourceTypeCamera;
+    if (isVideo) {
+        _imgPk.mediaTypes = @[(NSString *) kUTTypeMovie];    // 设置为视频模式 kUTTypeVideo - 不带声音  kUTTypeMovie-带声音
+        _imgPk.cameraCaptureMode = UIImagePickerControllerCameraCaptureModeVideo;  // 设置摄像头模式为录制视频
+        _imgPk.videoQuality = _videoQuality;   // 设置视频质量
 
-    [self.superVC presentViewController:imgPk animated:YES completion:nil];
+        if (self.videoMaxDuration > 0) {
+            _imgPk.videoMaximumDuration = self.videoMaxDuration;
+        }
+    }
+    else {
+        _imgPk.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto; //设置摄像头模式为拍照
+        _imgPk.allowsEditing = _editImg;
+    }
+
+    [self.superVC presentViewController:_imgPk animated:YES completion:nil];
 }
 
-- (void)openPhotoLib {
-    UIImagePickerController *imgPk = [[UIImagePickerController alloc] init];
-    imgPk.delegate = self;
+- (void)openPhotoLib:(BOOL)isVideo {
+    _imgPk = [[UIImagePickerController alloc] init];
+    _imgPk.delegate = self;
+    _imgPk.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 
-    imgPk.allowsEditing = _editImg;
-    imgPk.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    if (isVideo) {
+        if (self.videoMaxDuration > 0) {
+            _imgPk.videoMaximumDuration = self.videoMaxDuration;
+        }
+    }
+    else {
+        _imgPk.allowsEditing = _editImg;
+    }
 
-    [self.superVC presentViewController:imgPk animated:YES completion:nil];
+    [self.superVC presentViewController:_imgPk animated:YES completion:nil];
 }
 
-- (void)selByAlbum {
-    if (self.maxCount == 1) {
-        [self openPhotoLib];
+- (void)selByAlbum:(BOOL)isVideo {
+    // 选择一张图片时，直接打开系统相册
+    if (self.maxCount == 1 && _lastSelType == YunImgSelByPhotoAlbum) {
+        [self openPhotoLib:isVideo];
         return;
     }
 
+    // 多选
     TZImagePickerController *imgPk =
             [[TZImagePickerController alloc] initWithMaxImagesCount:(_maxCount - _curCount)
                                                            delegate:self];
-    imgPk.allowPickingImage = YES;
-    imgPk.allowPickingVideo = NO;
-    imgPk.isSelectOriginalPhoto = NO;
+    imgPk.allowPickingImage = !isVideo;
+    imgPk.allowPickingVideo = isVideo;
+    imgPk.isSelectOriginalPhoto = YES;
     imgPk.autoDismiss = NO;
 
     //imgPk.navigationBar.barTintColor = PpmTheme.colorHl;
@@ -135,23 +224,49 @@
     imgPk.allowTakePicture = NO; // 在内部显示拍照按钮
 
     imgPk.imagePickerControllerDidCancelHandle = ^() {
-        [self notiCmp:NO imgs:nil];
+        [self notiCmpItems:nil];
     };
 
     [self.superVC presentViewController:imgPk animated:YES completion:nil];
 }
 
-- (void)notiCmp:(BOOL)hasImg imgs:(NSArray *)imgs {
+- (void)notiCmpError:(NSString *)error {
+    [self notiErrorMsg:error items:nil];
+}
+
+- (void)notiCmpItems:(NSArray *)items {
+    [self notiErrorMsg:nil items:items];
+}
+
+- (void)notiErrorMsg:(NSString *)errMsg items:(NSArray *)items {
+    NSError *err = nil;
+    if (errMsg) {
+        err = [NSError errorWithCustomMsg:errMsg];
+    }
+
+    // 兼容旧方法
     if (_delegate && [_delegate respondsToSelector:@selector(didCmp:imgs:selType:)]) {
-        [_delegate didCmp:hasImg imgs:imgs selType:_selType];
+        [_delegate didCmp:YES imgs:items selType:_lastSelType];
     }
     else if (YunImgViewConfig.instance.delegate &&
              [YunImgViewConfig.instance.delegate respondsToSelector:@selector(didCmp:imgs:selType:)]) {
-        [YunImgViewConfig.instance.delegate didCmp:hasImg imgs:imgs selType:_selType];
+        [YunImgViewConfig.instance.delegate didCmp:YES imgs:items selType:_lastSelType];
+    }
+    else if (_delegate && [_delegate respondsToSelector:@selector(didCmpWithItems:error:selType:)]) {
+        [_delegate didCmpWithItems:items
+                             error:err
+                           selType:_lastSelType];
+    }
+    else if (YunImgViewConfig.instance.delegate &&
+             [YunImgViewConfig.instance.delegate respondsToSelector:@selector(didCmpWithItems:error:selType:)]) {
+        [YunImgViewConfig.instance.delegate didCmpWithItems:items
+                                                      error:err
+                                                    selType:_lastSelType];
     }
 
-    if (_shouldStoreImg && _selType != YunImgSelByPhotoAlbum && imgs.count == 1) {
-        UIImage *image = [UIImage imgWithObj:imgs[0]];
+    // 拍摄的照片，需要存储到相册
+    if (_shouldStoreImg && _lastSelType == YunImgSelByCamera && items.count == 1) {
+        UIImage *image = [UIImage imgWithObj:items[0]];
 
         if (image) {
             [self savedPhotosToAlbum:image];
@@ -191,56 +306,187 @@
 
     [picker dismissViewControllerAnimated:_disAmt completion:nil];
 
-    [self notiCmp:YES imgs:imgList];
+    [self notiCmpItems:imgList];
+}
+
+- (void)imagePickerController:(TZImagePickerController *)picker
+        didFinishPickingVideo:(UIImage *)coverImage
+                 sourceAssets:(PHAsset *)asset {
+    // 选择的限制时长和大小
+    [self getVideoPathFromPHAsset:asset rst:^(NSString *filePath) {
+        [picker dismissViewControllerAnimated:_disAmt completion:nil];
+
+        if ([YunValueVerifier isValidStr:filePath]) {
+            if (_videoMaxDuration >= 0) {
+                AVURLAsset *aAsset = [AVURLAsset assetWithURL:[NSURL fileURLWithPath:filePath]];
+                CMTime time = [aAsset duration];
+                int seconds = (int) ceil(time.value / time.timescale);
+
+                if (seconds <= _videoMaxDuration) {
+                    if (_videoLength > 0) {
+                        NSData *data = [NSData dataWithContentsOfFile:filePath];
+                        if (data.length > _videoLength * 1000) {
+                            [self notiCmpError:FORMAT(@"视频文件过大（应不大于%@ kb）", [YunValueHelper intStr:_videoLength])];
+
+                            return;
+                        }
+                    }
+                }
+                else {
+                    [self notiCmpError:FORMAT(@"视频文件时间过长（应不长于%@s）", [YunValueHelper intStr:_videoMaxDuration])];
+
+                    return;
+                }
+            }
+
+            YunImgData *videoItem = [YunImgData itemWithType:YunImgVideoPHAsset data:asset];
+            videoItem.thumbData = [YunImgData itemWithType:YunImgImage data:coverImage];
+
+            [self notiCmpItems:@[videoItem]];
+        }
+        else {
+            [self notiCmpError:@"获取视频文件失败"];
+        }
+    }];
 }
 
 - (void)tz_imagePickerControllerDidCancel:(TZImagePickerController *)picker {
     [picker dismissViewControllerAnimated:_disAmt completion:nil];
 
-    [self notiCmp:NO imgs:nil];
+    [self notiCmpItems:nil];
+}
+
+- (void)getVideoPathFromPHAsset:(PHAsset *)asset rst:(void (^)(NSString *filePath))rst {
+    NSArray *assetResources = [PHAssetResource assetResourcesForAsset:asset];
+    PHAssetResource *resource;
+
+    for (PHAssetResource *assetRes in assetResources) {
+        if (assetRes.type == PHAssetResourceTypePairedVideo ||
+            assetRes.type == PHAssetResourceTypeVideo) {
+            resource = assetRes;
+        }
+    }
+
+    if (resource == nil) {
+        rst(nil);
+        return;
+    }
+
+    NSString *fileName = @"tempAssetVideo.mov";
+    if (resource.originalFilename) {
+        fileName = resource.originalFilename;
+    }
+
+    if (asset.mediaType == PHAssetMediaTypeVideo || asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive) {
+        PHVideoRequestOptions *options = [[PHVideoRequestOptions alloc] init];
+        options.version = PHImageRequestOptionsVersionCurrent;
+        options.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+
+        NSString *PATH_MOVIE_FILE = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+        [[NSFileManager defaultManager] removeItemAtPath:PATH_MOVIE_FILE error:nil];
+        [[PHAssetResourceManager defaultManager] writeDataForAssetResource:resource
+                                                                    toFile:[NSURL fileURLWithPath:PATH_MOVIE_FILE]
+                                                                   options:nil
+                                                         completionHandler:^(NSError *_Nullable error) {
+                                                             if (error) {
+                                                                 rst(nil);
+                                                             }
+                                                             else {
+                                                                 rst(PATH_MOVIE_FILE);
+                                                             }
+                                                         }];
+    }
+    else {
+        rst(nil);
+    }
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker
 didFinishPickingMediaWithInfo:(NSDictionary<NSString *, id> *)info {
-    UIImage *img = nil;
-    if (self.maxCount == 1 && self.editImg) {
-        img = info[UIImagePickerControllerEditedImage]; // 编辑后的
-    }
-    else {
-        img = info[UIImagePickerControllerOriginalImage]; // 原始图片
-    }
 
-    if (img == nil) {
-        img = info[UIImagePickerControllerEditedImage]; // 编辑后的
-    }
+    NSString *type = info[UIImagePickerControllerMediaType];
+    // 图片
+    if ([type isEqualToString:(NSString *) kUTTypeImage]) {
+        UIImage *img = nil;
+        if (self.maxCount == 1 && self.editImg) {
+            img = info[UIImagePickerControllerEditedImage]; // 编辑后的
+        }
+        else {
+            img = info[UIImagePickerControllerOriginalImage]; // 原始图片
+        }
 
-    if (img == nil) {
-        [self notiCmp:NO imgs:nil];
-        return;
-    }
+        if (img == nil) {
+            img = info[UIImagePickerControllerEditedImage]; // 编辑后的
+        }
 
-    [picker dismissViewControllerAnimated:_disAmt completion:nil];
+        if (img == nil) {
+            [self notiCmpError:@"获取图片失败"];
+            [picker dismissViewControllerAnimated:_disAmt completion:nil];
+            return;
+        }
 
-    NSArray *imgList = nil;
-    if (_isCompression) {
-        NSData *imgData = [img resizeToData:self.imgBoundary
-                                     andCmp:self.imgLength];
-        imgList = @[imgData];
-    }
-    else {
-        imgList = @[img];
-    }
+        NSArray *imgList = nil;
+        if (_isCompression) {
+            NSData *imgData = [img resizeToData:self.imgBoundary
+                                         andCmp:self.imgLength];
+            imgList = @[imgData];
+        }
+        else {
+            imgList = @[img];
+        }
 
-    [self notiCmp:YES imgs:imgList];
+        [self notiCmpItems:imgList];
+        [picker dismissViewControllerAnimated:_disAmt completion:nil];
+    }
+    else if ([type isEqualToString:(NSString *) kUTTypeMovie]) { // 视频
+        // 保存视频
+        NSURL *url = info[UIImagePickerControllerMediaURL];
+        NSString *urlPath = [url path];
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(urlPath)) {
+            UISaveVideoAtPathToSavedPhotosAlbum(urlPath,
+                                                self,
+                                                @selector(video:didFinishSavingWithError:contextInfo:),
+                                                nil);
+        }
+    }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:_disAmt completion:^{
-    }];
+    [picker dismissViewControllerAnimated:_disAmt completion:nil];
 
-    [self notiCmp:NO imgs:nil];
+    [self notiCmpItems:nil];
+}
+
+// 视频保存后的回调
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo {
+    [_imgPk dismissViewControllerAnimated:_disAmt completion:nil];
+
+    if (error) {
+        [self notiCmpError:error.localizedDescription];
+    }
+    else {
+        [self checkVideoDurWithSourcePath:videoPath];
+    }
+}
+
+- (void)checkVideoDurWithSourcePath:(NSString *)videoPath {
+    // 拍摄的只限制时长
+    if (_videoMaxDuration >= 0) {
+        AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL fileURLWithPath:videoPath]];
+        CMTime time = [asset duration];
+        int seconds = (int) ceil(time.value / time.timescale);
+
+        if (seconds > _videoMaxDuration) {
+            [self notiCmpError:FORMAT(@"视频文件时间过长（应不长于%@s）", [YunValueHelper intStr:_videoMaxDuration])];
+
+            return;
+        }
+    }
+
+    YunImgData *videoItem = [YunImgData itemWithType:YunImgVideoFilePath data:videoPath];
+    [self notiCmpItems:@[videoItem]];
 }
 
 @end

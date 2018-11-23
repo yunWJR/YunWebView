@@ -6,10 +6,8 @@
 #import <JSONModel/JSONModel.h>
 #import "YwvImgItem.h"
 
-@protocol YwvImgItem;
-
 @interface YwvImgList : JSONModel
 
-@property (nonatomic, strong) NSArray <YwvImgItem *> <YwvImgItem> *imgList;
+@property (nonatomic, strong) NSArray <YwvImgItem *> *imgList;
 
 @end

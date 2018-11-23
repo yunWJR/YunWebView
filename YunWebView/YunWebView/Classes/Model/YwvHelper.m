@@ -3,10 +3,12 @@
 // Copyright (c) 2018 skkj. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "YwvHelper.h"
 #import "YunWebViewController.h"
 #import "YwvVcQueryModel.h"
 #import "YunWebViewConfig.h"
+#import "YwvNagQueryModel.h"
 
 @interface YwvHelper () {
 }
@@ -83,6 +85,23 @@
     }
 
     return nil;
+}
+
++ (void)openWebViewByUrl:(NSString *)url title:(NSString *)title nag:(UINavigationController *)nag {
+    YunWebViewController *webView = [YunWebViewController new];
+
+    YwvVcQueryModel *vcData = [YwvVcQueryModel new];
+    vcData.viewUrl = url;
+    vcData.viewLoadType = 1;
+
+    webView.vcData = vcData;
+
+    YwvNagQueryModel *nagData = [YwvNagQueryModel new];
+    nagData.nagTitle = title;
+
+    webView.nagData = nagData;
+
+    [nag pushViewController:webView animated:YES];
 }
 
 @end

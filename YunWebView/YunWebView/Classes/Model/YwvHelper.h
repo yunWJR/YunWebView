@@ -6,10 +6,13 @@
 #import <Foundation/Foundation.h>
 
 @class YunWebViewController;
+@class UINavigationController;
 
 @interface YwvHelper : NSObject
 
 + (instancetype)instance;
+
++ (void)openWebViewByUrl:(NSString *)url title:(NSString *)title nag:(UINavigationController *)nag;
 
 - (YunWebViewController *)findByViewId:(NSString *)viewId;
 

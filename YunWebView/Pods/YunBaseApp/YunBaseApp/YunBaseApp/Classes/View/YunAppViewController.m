@@ -7,6 +7,15 @@
 #import "YunAppViewController.h"
 #import "YunAppConfig.h"
 #import "YunSizeHelper.h"
+#import "YunYunAppViewControllerDelegate.h"
+
+typedef NS_ENUM(NSInteger, YunAppViewControllerDelegateItem) {
+    didInitVcDataDelegateItem,
+    didInitVcSubViewsDelegateItem,
+    startLoadDataDelegateItem,
+    startUpdateVcStateDelegateItem,
+    didUpdateVcStateCmpDelegateItem,
+};
 
 @interface YunAppViewController () {
 }
@@ -69,7 +78,7 @@
     self.firstLoad = YES;
     self.needUpdateData = NO;
 
-    _updateItem = YES;
+    _updateNagBarItem = YES;
     _updateInterval = YunAppConfig.instance.viewUpdateInterval;
 
     _noCtnMsg = @"无内容";
@@ -80,6 +89,8 @@
 
     self.sideOff = YunAppConfig.instance.defVcSideOff;
     self.hideNagBarBtmLine = YunAppConfig.instance.isHideNagBtmLine;
+
+    [self notiDelegate:didInitVcDataDelegateItem];
 }
 
 - (void)initVcSubViews {
@@ -100,6 +111,8 @@
     if (YunAppTheme.colorVcBg) {
         self.view.backgroundColor = YunAppTheme.colorVcBg;
     }
+
+    [self notiDelegate:didInitVcSubViewsDelegateItem];
 }
 
 - (void)handleViewWillAppear {
@@ -110,8 +123,6 @@
         }
 
         if (!_isNagBarClear) {
-            self.navigationController.navigationBar.translucent = true;
-
             // 导航栏背景颜色
             [self setNagBg:YunAppTheme.colorNagBg];
         }
@@ -119,7 +130,7 @@
         // title 字体
         [self setNagTitle:YunAppTheme.colorNagDark font:YunAppTheme.nagFontTitle];
 
-        if (_updateItem) {
+        if (_updateNagBarItem) {
             // 返回item
             if (!self.hideNagBarBackItem) {
                 self.navigationItem.leftBarButtonItem = self.leftNagItem;
@@ -155,6 +166,11 @@
             }
         }
     }
+
+    if (!_isNagBarClear) {
+        // 导航栏背景颜色-修复透明导航到不透明导航，偶尔导航栏为黑色。
+        [self setNagBg:YunAppTheme.colorNagBg];
+    }
 }
 
 - (void)handleViewDidDisappear {
@@ -163,17 +179,23 @@
 
 - (void)loadDataFromLocal {
     [self setCurUpdateDate];
+
+    [self notiDelegate:startLoadDataDelegateItem];
 }
 
 - (void)loadDataFromServer {
     [self setCurUpdateDate];
+
+    [self notiDelegate:startLoadDataDelegateItem];
 }
 
 - (void)loadMoreDataFromServer {
-
+    [self notiDelegate:startLoadDataDelegateItem];
 }
 
 - (void)updateVcState {
+    [self notiDelegate:startUpdateVcStateDelegateItem];
+
     [self updateVcStateOn];
 
     [self updateVcStateCmp];
@@ -196,10 +218,24 @@
 
 - (void)updateVcStateCmp {
     [self hideDefBlankView];
+
+    [self notiDelegate:didUpdateVcStateCmpDelegateItem];
 }
 
 - (BOOL)shouldLoadData {
     return self.firstLoad || self.needUpdateData;
+}
+
+- (void)loadData {
+    [self notiDelegate:startLoadDataDelegateItem];
+}
+
+- (void)loadDataCmp {
+    [self notiDelegate:didUpdateVcStateCmpDelegateItem];
+}
+
+- (void)loadDataCmpAndUpdateVcState {
+    [self updateVcState];
 }
 
 - (void)setLoadDataCmp {
@@ -222,15 +258,20 @@
 - (void)setNagBg:(UIColor *)color {
     // 导航栏背景颜色
     if (color) {
-        self.navigationController.navigationBar.translucent = false;
+        self.navigationController.navigationBar.translucent = NO;
 
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage imgWithColor:color]
-                                                      forBarMetrics:UIBarMetricsDefault];
-        self.navigationController.navigationBar.shadowImage = nil;
+        UIImage *colorImg = [UIImage imgWithColor:color];
+        if (colorImg == nil) {
+            [YunLogHelper logMsg:@"colorImg is nil"];
+        }
 
         [self.navigationController.navigationBar setBarTintColor:color];
 
-        //[self.navigationController.navigationBar layoutIfNeeded];
+        [self.navigationController.navigationBar setBackgroundImage:colorImg
+                                                      forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.shadowImage = UIImage.new;
+
+        [self.navigationController.navigationBar layoutIfNeeded];
     }
 }
 
@@ -288,7 +329,10 @@
 
 - (void)setNagBarClear {
     // 1、设置导航栏半透明
-    self.navigationController.navigationBar.translucent = true;
+    self.navigationController.navigationBar.translucent = YES;
+
+    [self.navigationController.navigationBar setBarTintColor:UIColor.clearColor];
+
     // 2、设置导航栏背景图片
     [self.navigationController.navigationBar setBackgroundImage:UIImage.new forBarMetrics:UIBarMetricsDefault];
     // 3、设置导航栏阴影图片
@@ -344,6 +388,69 @@
     return nil;
 }
 
+- (BOOL)notiDelegate:(YunAppViewControllerDelegateItem)item {
+    BOOL isHandle = NO;
+    if (_delegate) {
+        isHandle = [self handleNotiDelegate:item
+                                   delegate:_delegate];
+    }
+
+    if (isHandle) {
+        return isHandle;
+    }
+
+    if (YunAppConfig.instance.appDelegate) {
+        isHandle = [self handleNotiDelegate:item
+                                   delegate:YunAppConfig.instance.appDelegate];
+    }
+
+    return isHandle;
+}
+
+- (BOOL)handleNotiDelegate:(YunAppViewControllerDelegateItem)item delegate:(id <YunAppViewControllerDelegate>)delegate {
+    if (delegate) {
+        switch (item) {
+            case didInitVcDataDelegateItem: {
+                if ([delegate respondsToSelector:@selector(didInitVcData:)]) {
+                    [delegate didInitVcData:self];
+                    return YES;
+                }
+            }
+                break;
+            case didInitVcSubViewsDelegateItem: {
+                if ([delegate respondsToSelector:@selector(didInitVcSubViews:)]) {
+                    [delegate didInitVcSubViews:self];
+                    return YES;
+                }
+            }
+                break;
+            case startLoadDataDelegateItem: {
+                if ([delegate respondsToSelector:@selector(startLoadData:)]) {
+                    [delegate startLoadData:self];
+                    return YES;
+                }
+            }
+                break;
+            case startUpdateVcStateDelegateItem: {
+                if ([delegate respondsToSelector:@selector(startUpdateVcState:)]) {
+                    [delegate startUpdateVcState:self];
+                    return YES;
+                }
+            }
+                break;
+            case didUpdateVcStateCmpDelegateItem: {
+                if ([delegate respondsToSelector:@selector(didUpdateVcStateCmp:)]) {
+                    [delegate didUpdateVcStateCmp:self];
+                    return YES;
+                }
+            }
+                break;
+        }
+    }
+
+    return NO;
+}
+
 #pragma mark - protocol
 
 #pragma mark - request functions
@@ -356,6 +463,10 @@
 
 - (BOOL)canUpdate {
     if (_lastUpdateDate == nil) {
+        return YES;
+    }
+
+    if (_updateInterval <= 0) {
         return YES;
     }
 
