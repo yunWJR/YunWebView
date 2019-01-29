@@ -2,6 +2,23 @@
 
 使用Objective-C 实现的自定义 WebView，封装了 App 接口提供给 Web 前端使用，适用于 App 内嵌功能网页。
 
+- Platform:  iOS 9.0 and later
+
+## 需要的基本库
+
+- YunBaseApp
+
+- YunImgView
+
+- JSONModel
+
+## 安装
+
+Use the cocoaPods
+
+> `pod 'YunWebView'`
+
+---
 
 # YunWebView 接口定义说明
 
